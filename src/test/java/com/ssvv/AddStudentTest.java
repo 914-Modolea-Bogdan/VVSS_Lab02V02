@@ -35,6 +35,19 @@ public class AddStudentTest {
         catch (IOException e) {
             e.printStackTrace();
         }
+
+        File xml2 = new File("temeTest.xml");
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(xml2))) {
+            writer.write("<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\"?>\n<Teme>\n<tema ID=\"1\">\n" +
+                    "        <Descriere>File</Descriere>\n" +
+                    "        <Deadline>7</Deadline>\n" +
+                    "        <Startline>6</Startline>\n" +
+                    "    </tema>\n</Teme>");
+            writer.flush();
+        }
+        catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     @BeforeAll
@@ -46,7 +59,7 @@ public class AddStudentTest {
         Validator<Nota> notaValidator = new NotaValidator();
 
         StudentXMLRepository fileRepository1 = new StudentXMLRepository(studentValidator, "studentiTest.xml");
-        TemaXMLRepository fileRepository2 = new TemaXMLRepository(temaValidator, "teme.xml");
+        TemaXMLRepository fileRepository2 = new TemaXMLRepository(temaValidator, "temeTest.xml");
         NotaXMLRepository fileRepository3 = new NotaXMLRepository(notaValidator, "note.xml");
 
         AddStudentTest.service = new Service(fileRepository1, fileRepository2, fileRepository3);
@@ -65,6 +78,7 @@ public class AddStudentTest {
     @AfterAll
     public static void removeXML() {
         new File("studentiTest.xml").delete();
+        new File("temeTest.xml").delete();
     }
 
 
@@ -137,5 +151,17 @@ public class AddStudentTest {
     @Test
     public void testCase14_BBT_BVA() {
         assertThat(service.saveStudent("", "Bogdan", 934), is(1));
+    }
+
+
+
+    @Test
+    public void testValidTema() {
+        assertThat(AddStudentTest.service.saveTema("2", "TestValid", 9, 7), is(0));
+    }
+
+    @Test
+    public void testInvalidTema() {
+        assertThat(AddStudentTest.service.saveTema("3", "TestInvalid", 20, 7), is(1));
     }
 }
