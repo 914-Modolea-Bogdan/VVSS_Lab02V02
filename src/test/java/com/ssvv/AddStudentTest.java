@@ -31,8 +31,7 @@ public class AddStudentTest {
                     "        <Grupa>221</Grupa>\n" +
                     "    </student>\n</Entitati>");
             writer.flush();
-        }
-        catch (IOException e) {
+        } catch (IOException e) {
             e.printStackTrace();
         }
 
@@ -44,8 +43,21 @@ public class AddStudentTest {
                     "        <Startline>6</Startline>\n" +
                     "    </tema>\n</Teme>");
             writer.flush();
+        } catch (IOException e) {
+            e.printStackTrace();
         }
-        catch (IOException e) {
+
+
+        File xml3 = new File("noteTest.xml");
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(xml3))) {
+            writer.write("<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\"?>\n<Entitati>\n" +
+                    "    <nota IDStudent=\"1\" IDTema=\"1\">\n" +
+                    "        <Nota>10.0</Nota>\n" +
+                    "        <SaptamanaPredare>7</SaptamanaPredare>\n" +
+                    "        <Feedback>done</Feedback>\n" +
+                    "    </nota>\n</Entitati>");
+            writer.flush();
+        } catch (IOException e) {
             e.printStackTrace();
         }
     }
@@ -60,7 +72,7 @@ public class AddStudentTest {
 
         StudentXMLRepository fileRepository1 = new StudentXMLRepository(studentValidator, "studentiTest.xml");
         TemaXMLRepository fileRepository2 = new TemaXMLRepository(temaValidator, "temeTest.xml");
-        NotaXMLRepository fileRepository3 = new NotaXMLRepository(notaValidator, "note.xml");
+        NotaXMLRepository fileRepository3 = new NotaXMLRepository(notaValidator, "noteTest.xml");
 
         AddStudentTest.service = new Service(fileRepository1, fileRepository2, fileRepository3);
     }
@@ -80,7 +92,6 @@ public class AddStudentTest {
         new File("studentiTest.xml").delete();
         new File("temeTest.xml").delete();
     }
-
 
 
     @Test
@@ -154,7 +165,6 @@ public class AddStudentTest {
     }
 
 
-
     @Test
     public void testValidTema() {
         assertThat(AddStudentTest.service.saveTema("2", "TestValid", 9, 7), is(0));
@@ -163,5 +173,37 @@ public class AddStudentTest {
     @Test
     public void testInvalidTema() {
         assertThat(AddStudentTest.service.saveTema("3", "TestInvalid", 20, 7), is(1));
+    }
+
+
+    @Test
+    public void TC1_WBT() {
+        assertThat(service.saveTema(null, "N/A", 2, 1), is(1));
+    }
+
+    @Test
+    public void TC2_WBT() {
+        assertThat(service.saveTema("1", "", 2, 1), is(1));
+    }
+
+    @Test
+    public void TC3_WBT() {
+        assertThat(service.saveTema("1", "N/A", -1, 2), is(1));
+    }
+
+    @Test
+    public void TC4_WBT() {
+        assertThat(service.saveTema("1", "N/A", 1, -1), is(1));
+    }
+
+    @Test
+    public void TC5_WBT() {
+        assertThat(service.saveTema("1", "N/A", 2, 1), is(0));
+    }
+
+    @Test
+    public void TC6_WBT() {
+        assertThat(service.saveTema("1", "N/A", 2, 1), is(0));
+        assertThat(service.saveTema("1", "N/A", 2, 1), is(0));
     }
 }
