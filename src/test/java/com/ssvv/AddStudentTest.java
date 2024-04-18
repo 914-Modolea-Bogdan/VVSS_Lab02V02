@@ -177,32 +177,32 @@ public class AddStudentTest {
 
 
     @Test
-    public void TC1_WBT() {
+    public void testCase1_WBT() {
         assertThat(service.saveTema(null, "N/A", 2, 1), is(1));
     }
 
     @Test
-    public void TC2_WBT() {
+    public void testCase2_WBT() {
         assertThat(service.saveTema("1", "", 2, 1), is(1));
     }
 
     @Test
-    public void TC3_WBT() {
+    public void testCase3_WBT() {
         assertThat(service.saveTema("1", "N/A", -1, 2), is(1));
     }
 
     @Test
-    public void TC4_WBT() {
+    public void testCase4_WBT() {
         assertThat(service.saveTema("1", "N/A", 1, -1), is(1));
     }
 
     @Test
-    public void TC5_WBT() {
+    public void testCase5_WBT() {
         assertThat(service.saveTema("1", "N/A", 2, 1), is(0));
     }
 
     @Test
-    public void TC6_WBT() {
+    public void testCase6_WBT() {
         assertThat(service.saveTema("1", "N/A", 2, 1), is(0));
         assertThat(service.saveTema("1", "N/A", 2, 1), is(0));
     }
