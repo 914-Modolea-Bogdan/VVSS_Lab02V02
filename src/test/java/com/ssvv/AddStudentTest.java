@@ -91,6 +91,7 @@ public class AddStudentTest {
     public static void removeXML() {
         new File("studentiTest.xml").delete();
         new File("temeTest.xml").delete();
+        new File("noteTest.xml").delete();
     }
 
 
